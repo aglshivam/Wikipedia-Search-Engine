@@ -29,12 +29,16 @@ def writePrimaryIndex():
 
     firstWord = True
     indexFileCount += 1
-    file = open("/media/shivam/New Volume/testing/index/"+str(indexFileCount)+".txt", 'w')
+    file = open("/media/shivam/New Volume/testing/index1/"+str(indexFileCount)+".txt", 'w')
     # file = open("/home/shivam/WikiSearch/testing/index/"+str(indexFileCount)+".txt", 'w')
 
     for i in sorted(globalDict):
         if firstWord:
-            secondaryIndex[i] = indexFileCount
+            print(i, indexFileCount)
+            if i not in secondaryIndex:
+                secondaryIndex[i] = indexFileCount
+            else:
+                print('Collision found ',i, ' prev ', secondaryIndex[i])
             firstWord = False
         # toWrite = i+":"+globalDict[i]
         toWrite = []
@@ -61,7 +65,7 @@ def writeSecondaryIndex():
     for each primary index file first term will be entry for the secondary index
     '''
     global secondaryIndex
-    file = open('/media/shivam/New Volume/testing/index/secondary.txt', 'w')
+    file = open('/media/shivam/New Volume/testing/index1/secondary.txt', 'w')
     # file = open('/home/shivam/WikiSearch/testing/index/secondary.txt', 'w')
 
     for i in sorted(secondaryIndex):
@@ -75,8 +79,8 @@ for i in range(fileCount):
     fileRowData[i] = filePointer[i].readline() #read first line of each file
     words[i] = fileRowData[i].split(':') #split term and it's posting
     #words[i] is a list of [term, posting]
-    if words[i][0] not in heapList: #if word is not in the heap push it
-        heappush(heapList, words[i][0])
+    if str(words[i][0]) not in heapList: #if word is not in the heap push it
+        heappush(heapList, str(words[i][0]))
 
 
 while True:
@@ -85,7 +89,7 @@ while True:
         break
 
     total += 1
-    word = heappop(heapList) #extract top(smallest word) from heap
+    word = str(heappop(heapList)) #extract top(smallest word) from heap
     for i in range(fileCount):
         if processedFiles[i] and words[i][0] == word: #word belongs to this file
             if word in globalDict: #add posting to the dictionary
@@ -103,8 +107,8 @@ while True:
 
             if(fileRowData[i]):
                 words[i] = fileRowData[i].split(':')
-                if words[i][0] not in heapList:
-                    heappush(heapList, words[i][0])
+                if str(words[i][0]) not in heapList:
+                    heappush(heapList, str(words[i][0]))
             else:
                 processedFiles[i] = 0
                 filePointer[i].close()

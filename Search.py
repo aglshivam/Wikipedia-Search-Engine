@@ -23,7 +23,7 @@ def readDocTitle():
     '''
     global docIdTitleMap
 
-    with open('/media/shivam/New Volume/testing/index/docTitle.txt', 'r') as infile:
+    with open('/media/shivam/New Volume/testing/index1/docTitle.txt', 'r') as infile:
     # with open('/home/shivam/WikiSearch/testing/index/docTitle.txt', 'r') as infile:
         for line in infile:
             docId, title = line.split(':',1)
@@ -36,7 +36,7 @@ def readtotalDoc():
     written in the totalPage.txt, created will parsing the XML
     """
     global totalDoc
-    with open('/media/shivam/New Volume/testing/index/totalPage.txt', 'r') as infile:
+    with open('/media/shivam/New Volume/testing/index1/totalPage.txt', 'r') as infile:
     # with open('/home/shivam/WikiSearch/testing/index/totalPage.txt', 'r') as infile:
         totalDoc = int(infile.read())
 
@@ -46,7 +46,7 @@ def readSecondaryIndex():
     read secondary index in dictionary
     '''
     global secondaryIndex
-    with open('/media/shivam/New Volume/testing/index/secondary.txt', 'r') as secondary:
+    with open('/media/shivam/New Volume/testing/index1/secondary.txt', 'r') as secondary:
     # with open('/home/shivam/WikiSearch/testing/index/secondary.txt', 'r') as secondary:
         lines = secondary.readlines()
         for line in lines:
@@ -81,7 +81,7 @@ def readIndex(loc, word):
     if word not found return empty list else return the posting of the word
     '''
 
-    indexFile = open('/media/shivam/New Volume/testing/index/' + str(loc) + '.txt', 'r')
+    indexFile = open('/media/shivam/New Volume/testing/index1/' + str(loc) + '.txt', 'r')
     # indexFile = open('/home/shivam/WikiSearch/testing/index/' + str(loc) + '.txt', 'r')
     data = indexFile.read()
     matcher = re.search('^'+word + ':', data, re.M)
@@ -168,7 +168,7 @@ def readIndexForFieldQuery(tag, word):
         data += readIndex(loc, word)
         doc_count = len(data)
         # print('word', word)
-
+        # print(data)
         #calculate idf
         idf = log10(totalDoc/doc_count)
 
@@ -214,7 +214,7 @@ def processFieldQueryResult():
         if(count == resultSize):
             break
 
-    searchFieldResult.clear()
+    # searchFieldResult.clear()
 
 def processFieldQuery(query):
     dictionary = parseFieldQuery(query) #tagname, word
@@ -259,7 +259,7 @@ def readIndexForQuery(word):
         data += readIndex(loc, word)
         doc_count = len(data)
         # print('word', word)
-
+        # print(data)
         #calculate idf
         idf = log10(totalDoc/doc_count)
         for i in data:
@@ -317,7 +317,7 @@ def processResult():
         if count == resultSize:
             break
 
-    searchResult.clear()
+    # searchResult.clear()
 
 def processNormalQuery(query):
     #tokenize based on the spaces
@@ -359,3 +359,5 @@ while True:
     stop = timeit.default_timer()
     print('Time: ', stop - start)
     print('-----------------------------')
+    searchFieldResult.clear()
+    searchResult.clear()
